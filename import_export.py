@@ -9,9 +9,5 @@ def Export(filename, attendanceList):
         for student in attendanceList:
             file.write(f"{student['Name']}, {student['Presence']}\n")
 
-filename = r"C:\michal\test.txt"
-students = importStudents(filename)
-print(students)
-
 
 
