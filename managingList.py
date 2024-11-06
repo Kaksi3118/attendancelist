@@ -36,7 +36,6 @@ def importFromFile(fileName="students_Database.csv"):
         print(f"wczytano {x} studentow z listy")
     else:
         print(f"Plik nie istinieje, baza studentow w pliku csv zosatala utworzona")
-
     return students_list
 
 def main():
@@ -47,6 +46,7 @@ def main():
         f = input("Co chcesz zrobic?"
                   "\n1 - dodac studenta"
                   "\n2 - wypisac liste studentow"
+                  "\n3 - usunac studenta po ID"
                   "\nreszta - zamknij program\n")
         if f == '1':
             name = input("Podaj imie: ")
