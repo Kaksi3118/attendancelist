@@ -10,4 +10,3 @@ def Export(filename, attendanceList):
             file.write(f"{student['Name']}, {student['Presence']}\n")
 
 
-
