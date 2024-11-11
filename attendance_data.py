@@ -1,6 +1,6 @@
-from sys import exception
 
-class Attendance_Data:
+
+class AttendanceDataClass:
 
     def __init__(self, student_list: list,date=None):
         """
