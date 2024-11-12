@@ -10,10 +10,10 @@ class CheckAttendanceClass:
             self.students = []
             self.attendance_data = {}
 
-    def load_file(self, date):
+    def load_file(self, date, filename):
         self.attendance_data
         fieldnames = ["name:", "surname:", "id:", "date:", "attendance:"]
-        with open(file_path, newline='', encoding='utf-8') as csvfile:  #sczyta po kolei kolejne linijki pliku
+        with open(filename, newline='', encoding='utf-8') as csvfile:  #sczyta po kolei kolejne linijki pliku
             reader = csv.reader(csvfile)
             students = [row[0] for row in reader]
 
