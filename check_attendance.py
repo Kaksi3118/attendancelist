@@ -18,7 +18,7 @@ def saveAttendance(self, filename):
     with open(filename, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writerows(self.attendance_list)
-    print(f"Saved attendance list to: {filename}")
+    print(f"Zapisano obecność do pliku: {filename}")
 
 
 class CheckAttendanceClass:
