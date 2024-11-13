@@ -1,24 +1,10 @@
 from ctypes import c_char_p
 from datetime import datetime
-from managingList import managingListClass
+
 import os
-from import_export import ImportExportClass
 import csv
-from attendance_data import AttendanceDataClass
+
 from managingList import managingListClass
-
-class importingFunctions: #Dla szybkiego dostepu do wszystkich funkcji
-      importExport = ImportExportClass()
-      attednanceEditor = AttendanceDataClass(student_list = [])
-      managingList = managingListClass()
-use = importingFunctions()
-
-def saveAttendance(self, filename):
-    fieldnames = ["name:","surname:","id:","attendance:"]
-    with open(filename, mode='w', newline='', encoding='utf-8') as file:
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writerows(self.attendance_list)
-    print(f"Zapisano obecność do pliku: {filename}")
 
 
 class CheckAttendanceClass:
@@ -26,6 +12,15 @@ class CheckAttendanceClass:
         self.students = []
         self.date_text = ""
         self.attendance_list = []
+
+    def saveAttendance(self, filename):
+        fieldnames = ["name:", "surname:", "id:", "attendance:"]
+        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            for student in self.attendance_list:
+                writer.writerow(student)
+        print(f"Saved attendance list to: {filename}")
 
     def addAttendance(self, name, surname, ids, attendance):
         student_attendance = {
@@ -37,9 +32,10 @@ class CheckAttendanceClass:
         self.attendance_list.append(student_attendance)
         print(f"Dodano obecność studenta: {name} {surname}, id studenta: {ids}")
 
-    def editPresence(self, filename):
+    def addAndSavePresence(self, filename):
         while True:
-            self.students = use.managingList.importFromFile(filename)
+            imp = managingListClass()
+            self.students = imp.importFromFile(filename)
             print("1.Obecność")
             print("2.Zapis obecności do pliku")
             print("3.Wróć")
@@ -47,18 +43,24 @@ class CheckAttendanceClass:
             if choice == "1":
                 isDateGood = False
                 while isDateGood == False:
-                    isDateGood = True
                     self.date_text = input("Podaj date obecności: (yyyy.mm.dd)")
                     try:
+                        isDateGood = True
                         date = datetime.strptime(self.date_text, "%Y.%m.%d").date()
                     except ValueError:
                         isDateGood = False
                         print("Podano bledna wartosc!")
+                    savefile = self.date_text
+                    if os.path.isfile(f"Obecność_{savefile}.csv"):
+                        isDateGood = False
+                        print("Na ten dzień była już sprawdzona obecność. Edytuj obecność lub usuń plik z obecnością")
+                    else:
+                        isDateGood = True
                 for student in self.students:
                     name = student["name:"]
                     surname = student["surname:"]
                     ids = student["id:"]
-                    print(f"Czy {student["name:"]} {student["surname:"]} był obecny?")
+                    print(f"Czy {name} {surname} był obecny?")
                     isPresentOrNo = False
                     while isPresentOrNo == False:
                         attendance = input("y/n:")
@@ -74,7 +76,7 @@ class CheckAttendanceClass:
                 if savefile == "":
                     print("Nie sprawdzono żadnej obecności")
                 else:
-                    saveAttendance(self, "Obecność_"+savefile+".csv")
+                    self.saveAttendance(f"Obecność_{savefile}.csv")
             elif choice == "3":
                 os.system("python AttendanceList.py")
             else:
