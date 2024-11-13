@@ -97,26 +97,3 @@ class managingListClass:
                 df.to_csv(filename, index=False)
         except Exception as e:
             print(Exception)
-
-    '''
-     for _ in self.students:
-         print("+",_)
-     studentToDelete = next((student for student in self.students if student.get(key) == idToDelete), None)
-     print(studentToDelete)
-     if studentToDelete:
-         print("Lista przed usunięciem:")
-         for student in self.students:
-             print(student)
-
-         # Usuwamy studenta z listy `self.students`
-         self.students = [student for student in self.students if student != studentToDelete]
-         print(f"Usunięto: {studentToDelete}")
-
-         print("Lista po usunięciu:")
-         for student in self.students:
-             print(student)
-
-         # Aktualizujemy plik używając bieżącej instancji `self`
-         self.updateFile(filename)
-     else:
-         print(f"Nie znaleziono studenta o ID: {idToDelete}")'''

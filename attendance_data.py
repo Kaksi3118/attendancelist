@@ -20,19 +20,19 @@ class AttendanceDataClass:
             imp = managingListClass()
             self.attendance_list = imp.importFromFile(filenameDate)
             for student in self.attendance_list:
-                print(self.attendance_list)
                 name = student["name:"]
                 surname = student["surname:"]
                 attendance = student["attendance:"]
-                print(f"Czy chcesz zmienic obecnosc {name} {surname} - ({attendance})? ")
+                print(f"{name} {surname} - czy był obecny: ({attendance})")
                 isPresentOrNo = False
                 while isPresentOrNo == False:
-                    attendance = input("y/n:")
+                    attendance = input("czy był obecny? y/n: ")
                     if attendance == "y":
                         attendance = "Yes"
                         isPresentOrNo = True
                     elif attendance == "n":
                         attendance = "No"
+                        isPresentOrNo = True
                     student["attendance:"] = attendance
             self.updateFile(filenameDate)
 
