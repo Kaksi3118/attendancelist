@@ -18,10 +18,10 @@ from managingList import managingListClass
 
 class importingFunctions: #Dla szybkiego dostepu do wszystkich funkcji
     importExport = ImportExportClass()
-    attednanceEditor = AttendanceDataClass(student_list = [])
+    attednanceEditor = AttendanceDataClass()
     checkAttendance = CheckAttendanceClass()
     managingList = managingListClass()
-
+    attendanceData = AttendanceDataClass()
 
 
 use = importingFunctions() # deklaracja funkcji
@@ -102,7 +102,10 @@ while wantToEnd == False:
                 wantToStop = True
 
     elif (decision == "3"):
-        use.checkAttendance.editPresence(filename)
+        use.checkAttendance.addAndSavePresence(filename)
         use.managingList.saveToFile(filename)
+    elif (decision == '4'):
+        fileNameDate = input("Podaj date:")
+        use.attendanceData.editPresence(f"Obecność_{fileNameDate}.csv")
     else:
         wantToEnd = True

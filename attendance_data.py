@@ -1,9 +1,14 @@
+from operator import attrgetter
+
+from check_attendance import CheckAttendanceClass
 from import_export import ImportExportClass
+from managingList import managingListClass
 
 
 class AttendanceDataClass:
 
-    def __init__(self, student_list: list,date=None):
+
+    def __init__(self):
         """
         :param student_list: list of dictionaries with student data
         """
@@ -11,10 +16,13 @@ class AttendanceDataClass:
         self.date_text = ""
         self.attendance_list = []
 
-    def edit_presence(self,filenameDate):
-            imp = ImportExportClass()
-            self.attendance_list = imp.import_students(filenameDate)
+    def editPresence(self,filenameDate):
+            imp = managingListClass()
+            chck = CheckAttendanceClass()
+            #mana = managingListClass()
+            self.attendance_list = imp.importFromFile(filenameDate)
             for student in self.attendance_list:
+                print(self.attendance_list)
                 name = student["name:"]
                 surname = student["surname:"]
                 attendance = student["attendance:"]
@@ -28,16 +36,10 @@ class AttendanceDataClass:
                     elif attendance == "n":
                         attendance = "No"
                     student["attendance:"] = attendance
+            chck.saveAttendance(filenameDate)
 
 
 
-'''
-            id_ = student["id"]
-            if id_ in self.attendance:
-                self.attendance[id_] = present
-            else:
-                print(f"Student does not exist.")
-'''
     def get_date(self):
         return self.date
 
