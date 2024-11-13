@@ -1,7 +1,7 @@
 from operator import attrgetter
+import csv
 
-from check_attendance import CheckAttendanceClass
-from import_export import ImportExportClass
+
 from managingList import managingListClass
 
 
@@ -18,8 +18,6 @@ class AttendanceDataClass:
 
     def editPresence(self,filenameDate):
             imp = managingListClass()
-            chck = CheckAttendanceClass()
-            #mana = managingListClass()
             self.attendance_list = imp.importFromFile(filenameDate)
             for student in self.attendance_list:
                 print(self.attendance_list)
@@ -36,19 +34,17 @@ class AttendanceDataClass:
                     elif attendance == "n":
                         attendance = "No"
                     student["attendance:"] = attendance
-            chck.saveAttendance(filenameDate)
+            self.updateFile(filenameDate)
 
-
-
-    def get_date(self):
-        return self.date
-
-    def get_export_list(self):
-        export_list = []
-        for id_, student in self.student_list.items():
-            student_copy = student.copy()
-            student_copy["presence"] = "Present" if self.attendance[id_] else "Absent"
-            export_list.append(student_copy)
-        return export_list
+    def updateFile(self, fileNameDate):
+            # Otwieramy plik w trybie 'w', co wyczyści plik i zapisuje nagłówek
+            fieldnames = ["name:", "surname:", "id:", "attendance:"]
+            with open(fileNameDate, mode='w', newline='', encoding='utf-8') as file:
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+            # Zapisujemy wszystkich obecnych studentów z `self.students`
+                for student in self.attendance_list:
+                    writer.writerow(student)
+            print(f"Updated student list exported to: {fileNameDate}")
 
 
