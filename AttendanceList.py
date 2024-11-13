@@ -5,12 +5,13 @@ from operator import truth, truediv
 from tkinter import wantobjects
 from traceback import print_tb
 import re
+import pandas as pd
 
-from pandas.core.computation.ops import isnumeric
 from setuptools.package_index import interpret_distro_name
 
 from check_attendance import CheckAttendanceClass
 from import_export import ImportExportClass
+
 import csv
 from attendance_data import AttendanceDataClass
 from managingList import managingListClass

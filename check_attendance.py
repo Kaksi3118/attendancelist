@@ -58,7 +58,7 @@ class CheckAttendanceClass:
                     name = student["name:"]
                     surname = student["surname:"]
                     ids = student["id:"]
-                    print(f"Czy {student["name:"]} {student["surname:"]} był obecny?")
+                    print(f"Czy {name} {surname} był obecny?")
                     isPresentOrNo = False
                     while isPresentOrNo == False:
                         attendance = input("y/n:")
