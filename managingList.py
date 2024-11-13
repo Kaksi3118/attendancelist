@@ -1,5 +1,8 @@
 import csv
 import os
+import pandas as pd
+from setuptools.command.build_ext import if_dl
+
 
 
 class managingListClass:
@@ -15,7 +18,7 @@ class managingListClass:
             "date:": date
         }
         self.students.append(student)
-        print(f"dodano studenta: {name} {surname}, numer studenta: {id}")
+        print(f"\ndodano studenta: {name} {surname}, numer studenta: {id}")
     def checkIfCreated(self, filename):
         try:
             if os.path.isfile(filename):
@@ -86,25 +89,34 @@ class managingListClass:
             writer.writerow(student)
         print(f"Updated student list exported to: {filename}")
 
-    def deleteStudent(self, key, idToDelete, filename):
-        for _ in self.students:
-            print("+",_)
-        studentToDelete = next((student for student in self.students if student.get(key) == idToDelete), None)
-        print(studentToDelete)
-        if studentToDelete:
-            print("Lista przed usunięciem:")
-            for student in self.students:
-                print(student)
+    def deleteStudent(self, idToDelete, filename):
+        try:
+                df = pd.read_csv(filename)
+                df = df[df["id:"] != int(idToDelete)]
+                print(f"usuniecie : \n{df}")
+                df.to_csv(filename, index=False)
+        except Exception as e:
+            print(Exception)
 
-            # Usuwamy studenta z listy `self.students`
-            self.students = [student for student in self.students if student != studentToDelete]
-            print(f"Usunięto: {studentToDelete}")
+    '''
+     for _ in self.students:
+         print("+",_)
+     studentToDelete = next((student for student in self.students if student.get(key) == idToDelete), None)
+     print(studentToDelete)
+     if studentToDelete:
+         print("Lista przed usunięciem:")
+         for student in self.students:
+             print(student)
 
-            print("Lista po usunięciu:")
-            for student in self.students:
-                print(student)
+         # Usuwamy studenta z listy `self.students`
+         self.students = [student for student in self.students if student != studentToDelete]
+         print(f"Usunięto: {studentToDelete}")
 
-            # Aktualizujemy plik używając bieżącej instancji `self`
-            self.updateFile(filename)
-        else:
-            print(f"Nie znaleziono studenta o ID: {idToDelete}")
+         print("Lista po usunięciu:")
+         for student in self.students:
+             print(student)
+
+         # Aktualizujemy plik używając bieżącej instancji `self`
+         self.updateFile(filename)
+     else:
+         print(f"Nie znaleziono studenta o ID: {idToDelete}")'''

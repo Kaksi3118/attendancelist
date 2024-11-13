@@ -5,6 +5,8 @@ from operator import truth, truediv
 from tkinter import wantobjects
 from traceback import print_tb
 import re
+
+from pandas.core.computation.ops import isnumeric
 from setuptools.package_index import interpret_distro_name
 
 from check_attendance import CheckAttendanceClass
@@ -22,13 +24,14 @@ class importingFunctions: #Dla szybkiego dostepu do wszystkich funkcji
 
 
 use = importingFunctions() # deklaracja funkcji
+managingListClass.students = []
 use.students = []
 filename = "students_Database.csv"
 use.managingList.checkIfCreated(filename) # sprawdzenie czy istnieje plik
 wantToEnd = False
 
 while wantToEnd == False:
-    use.students = use.managingList.importFromFile(filename)
+    managingListClass.students = use.managingList.importFromFile(filename)
     print("\n" * 100)
     decision = input("Zdecyduj co chcesz zrobic: "
                      "\n1 - Pokaż liste studentów"
@@ -38,7 +41,7 @@ while wantToEnd == False:
                      "\nreszta - zakończ\n")
     print("\n" * 100)
     if(decision == "1"):
-      for student in use.students:
+      for student in managingListClass.students:
           print(student)
       _ = input("Press any key to continue...")
     elif(decision == "2"):
@@ -52,10 +55,17 @@ while wantToEnd == False:
                     isDuplicate = True
                     while (isDuplicate == True):
                         isDuplicate = False
-                        idInput = input("Podaj unikalne id: ")  # string: imie,nazwisko,id,data,obecny
-                        for student in use.students:
-                            dupeStudent = next((student for student in use.students if student["id:"] == idInput),
-                                                   None)
+                        isNumber = False
+                        while isNumber == False:
+                            idInput = input("Podaj unikalne id: ")  # string: imie,nazwisko,id,data,obecny
+                            try:
+                                int(idInput)
+                                isNumber = True
+                            except:
+                                print("podano bledny typ danych, prosze podac liczbe calkowita dodatnia")
+                                isNumber = False
+                        for student in managingListClass.students:
+                            dupeStudent = next((student for student in managingListClass.students if student["id:"] == idInput),None)
                             if dupeStudent:
                                 isDuplicate = True
                                 print(f"id: {idInput} juz istnieje")
@@ -75,8 +85,17 @@ while wantToEnd == False:
                     use.managingList.saveToFile(filename)
 
             elif addOrDelete == "2":
-                idToDelete = input("Podaj id do usuniecia: ")
-                use.students = use.managingList.deleteStudent("id:",idToDelete, filename)
+                isNumber = False
+                while isNumber == False:
+                    idToDelete = input("Podaj id do usuniecia: ")
+                    try:
+                        int(idToDelete)
+                        isNumber = True
+                    except:
+                        print("podano bledny typ danych, prosze podac liczbe calkowita dodatnia")
+                        isNumber = False
+                use.managingList.deleteStudent(idToDelete, filename)
+
 
             else:
                 wantToStop = True
