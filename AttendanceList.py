@@ -1,20 +1,7 @@
 from datetime import datetime
-from enum import unique
-from fileinput import filename
-from operator import truth, truediv
-from tkinter import wantobjects
-from traceback import print_tb
-import re
-import pandas as pd
-
-from setuptools.package_index import interpret_distro_name
-
 from attendance_data import AttendanceDataClass
 from check_attendance import CheckAttendanceClass
 from import_export import ImportExportClass
-
-import csv
-
 from managingList import managingListClass
 
 class importingFunctions: #Dla szybkiego dostepu do wszystkich funkcji
@@ -104,7 +91,16 @@ while wantToEnd == False:
         use.checkAttendance.addAndSavePresence(filename)
         use.managingList.saveToFile(filename)
     elif (decision == '4'):
-        fileNameDate = input("Podaj date:")
+        isDateGood = False
+        while isDateGood == False:
+            isDateGood = True
+            fileNameDate = input("Podaj date: YYYY.mm.dd ")
+            try:
+                date = datetime.strptime(fileNameDate, "%Y.%m.%d").date()
+            except ValueError:
+                isDateGood = False
+                print("Podano bledna wartosc!")
+
         use.attendanceData.editPresence(f"Obecność_"+fileNameDate+".csv")
     else:
         wantToEnd = True
