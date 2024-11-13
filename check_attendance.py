@@ -43,13 +43,19 @@ class CheckAttendanceClass:
             if choice == "1":
                 isDateGood = False
                 while isDateGood == False:
-                    isDateGood = True
                     self.date_text = input("Podaj date obecności: (yyyy.mm.dd)")
                     try:
+                        isDateGood = True
                         date = datetime.strptime(self.date_text, "%Y.%m.%d").date()
                     except ValueError:
                         isDateGood = False
                         print("Podano bledna wartosc!")
+                    savefile = self.date_text
+                    if os.path.isfile(f"Obecność_{savefile}.csv"):
+                        isDateGood = False
+                        print("Na ten dzień była już sprawdzona obecność. Edytuj obecność lub usuń plik z obecnością")
+                    else:
+                        isDateGood = True
                 for student in self.students:
                     name = student["name:"]
                     surname = student["surname:"]
