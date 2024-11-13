@@ -1,32 +1,50 @@
+from operator import attrgetter
+import csv
+
+
+from managingList import managingListClass
 
 
 class AttendanceDataClass:
 
-    def __init__(self, student_list: list,date=None):
+
+    def __init__(self):
         """
         :param student_list: list of dictionaries with student data
         """
-        self.student_list = {student["id"]: student for student in student_list}
-        self.attendance = {student["id"]: False for student in student_list}
-        self.date = date
+        self.students = []
+        self.date_text = ""
+        self.attendance_list = []
 
-    def edit_presence(self, student, present:bool=True):
+    def editPresence(self,filenameDate):
+            imp = managingListClass()
+            self.attendance_list = imp.importFromFile(filenameDate)
+            for student in self.attendance_list:
+                print(self.attendance_list)
+                name = student["name:"]
+                surname = student["surname:"]
+                attendance = student["attendance:"]
+                print(f"Czy chcesz zmienic obecnosc {name} {surname} - ({attendance})? ")
+                isPresentOrNo = False
+                while isPresentOrNo == False:
+                    attendance = input("y/n:")
+                    if attendance == "y":
+                        attendance = "Yes"
+                        isPresentOrNo = True
+                    elif attendance == "n":
+                        attendance = "No"
+                    student["attendance:"] = attendance
+            self.updateFile(filenameDate)
 
-            id_ = student["id"]
-            if id_ in self.attendance:
-                self.attendance[id_] = present
-            else:
-                print(f"Student does not exist.")
-
-    def get_date(self):
-        return self.date
-
-    def get_export_list(self):
-        export_list = []
-        for id_, student in self.student_list.items():
-            student_copy = student.copy()
-            student_copy["presence"] = "Present" if self.attendance[id_] else "Absent"
-            export_list.append(student_copy)
-        return export_list
+    def updateFile(self, fileNameDate):
+            # Otwieramy plik w trybie 'w', co wyczyści plik i zapisuje nagłówek
+            fieldnames = ["name:", "surname:", "id:", "attendance:"]
+            with open(fileNameDate, mode='w', newline='', encoding='utf-8') as file:
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+            # Zapisujemy wszystkich obecnych studentów z `self.students`
+                for student in self.attendance_list:
+                    writer.writerow(student)
+            print(f"Updated student list exported to: {fileNameDate}")
 
 
